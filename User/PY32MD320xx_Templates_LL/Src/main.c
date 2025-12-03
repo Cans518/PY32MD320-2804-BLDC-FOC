@@ -120,14 +120,14 @@ int main(void)
 	motor.readHeader = 0XAB;
 	if(Load_MotorConf(&conf)){
 		conf.ID = 1;
-		conf.m_zero = 0X2C39;
+		conf.m_zero = 0;
 		conf.p_edge = 0;
 		conf.n_edge = 0;
-		conf.offset = 11975;
+		conf.offset = 0;
 		conf.Kp_pos = 1800;
 		conf.Ki_pos = 0;
-		conf.Kp_spd = 130;
-		conf.Ki_spd = 10;
+		conf.Kp_spd = 220;
+		conf.Ki_spd = 15;
 		conf.magic_word = FLASH_MAGIC_WORD;
 	}
 	position.Kp = conf.Kp_pos;

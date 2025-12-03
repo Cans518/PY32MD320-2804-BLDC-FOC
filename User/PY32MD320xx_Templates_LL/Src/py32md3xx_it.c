@@ -133,7 +133,6 @@ void TIM1_BRK_UP_TRG_COM_IRQHandler(void){
 					position.P = motor.target_pos + conf.m_zero - motor.pos;
 				  position.P += (position.P < - 8192) ? 16383 : (position.P > 8192) ? -16383 : 0;
 				}
-
 				if(! ( (position.PI >= speed_limit && position.P > 0) || (position.PI <= -speed_limit && position.P < 0) ))
 				{
 					position.I += Q15_Multiply(position.Ki, position.P);
@@ -187,6 +186,9 @@ void USART2_IRQHandler(void){
 				//Config mode, send a pack of config			
 					motor.mode = CommandBuffer.Command;
 				  switch(motor.mode){
+						case 0XC3:{
+								motor.target_pos += CommandBuffer.Value;
+						}
 						//position mode
 						case 0XC2:
 							if(conf.p_edge || conf.n_edge){
@@ -227,16 +229,16 @@ void USART2_IRQHandler(void){
 							break;
 						//K config
 						case 0xD0:
-							conf.Kp_pos = CommandBuffer.Value;
+							position.Kp = CommandBuffer.Value;
 							break;
 						case 0xD1:
-							conf.Ki_pos = CommandBuffer.Value;
+							position.Ki = CommandBuffer.Value;
 							break;
 						case 0xE0:
-							conf.Kp_spd = CommandBuffer.Value;
+							speed.Kp = CommandBuffer.Value;
 							break;
 						case 0xE1:
-							conf.Kp_spd = CommandBuffer.Value;
+							speed.Ki = CommandBuffer.Value;
 							break;
 						case 0xA0:
 							LL_TIM_DisableAllOutputs(TIM1);
