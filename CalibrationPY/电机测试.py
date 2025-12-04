@@ -29,7 +29,11 @@ class MotorController:
         """
         self.ser.write(command)
         time.sleep(0.01)
-        return self.ser.read_all()
+        temp = self.ser.read_all()
+        if temp:
+            return temp
+        else:
+            raise Exception("未收到响应")
 
     def set_coarse_zero_position(self):
         """
