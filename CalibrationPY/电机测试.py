@@ -213,6 +213,8 @@ class MotorController:
         """
         print("开始自动寻找0电角度位置...")
 
+        last_current_difference = float('inf')
+
 
         for iteration in range(max_iterations):
             print(f"\n--- 第 {iteration + 1} 次迭代 ---")
@@ -238,12 +240,21 @@ class MotorController:
             self.stop_motor()
             time.sleep(1)  # 等待电机停止
 
+            # 如果正转或者反转速度为0，出现错误，用户选择跳过本次或者退出
+            if forward_speed == 0 or reverse_speed == 0:
+                print("正转或反转速度为0，请检查电机状态")
+                user_input = input("是否跳过本次寻找?(Y/N): ").strip().lower()
+                if user_input == "y":
+                    continue
+                elif user_input == "n":
+                    break
+
             # 计算电流差值
             current_difference = abs(forward_speed) - abs(reverse_speed)
             print(f"正转速度: {forward_speed:.2f}, 反转速度: {reverse_speed:.2f}, 差值: {current_difference:.2f}")
 
             # 判断是否满足条件
-            if abs(current_difference) <= 2:
+            if abs(current_difference) <= 5:
                 print(f"\n找到0电角度位置: {self.current_zero_position}")
                 print(f"最终速度差值: {current_difference:.2f}")
                 return self.current_zero_position
@@ -259,13 +270,13 @@ class MotorController:
             elif abs(current_difference) > 15:
                 delta = 5
             if current_difference > 0:
-                # 正转电流大，0电角度位置+10
-                self.current_zero_position -= delta
-                print("正转速度较大，0电角度位置+10")
-            else:
-                # 反转电流大，0电角度位置-10
+                # 正转电流大
                 self.current_zero_position += delta
-                print("反转速度较大，0电角度位置-10")
+                print("正转速度较大，0电角度位置调整：" ,  delta)
+            else:
+                # 反转电流大
+                self.current_zero_position -= delta
+                print("反转速度较大，0电角度位置调整：" ,  delta)
 
             # 设置新的0电角度位置
             self.set_zero_position(self.current_zero_position)
@@ -284,7 +295,7 @@ class MotorController:
 def main():
     # 使用示例
     # 请根据实际情况修改串口号
-    port = "COM10"  # Windows
+    port = "COM16"  # Windows
     # port = "/dev/ttyUSB0"  # Linux
     # port = "/dev/tty.usbserial"  # macOS
 
