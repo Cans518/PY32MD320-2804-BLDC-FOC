@@ -1,0 +1,73 @@
+# Keil specific files
+*.uvoptx
+*.uvguix
+*.uvprojx
+
+# Build output folders
+Objects/
+Listings/
+Output/
+
+# Temporary files
+*.bak
+*.tmp
+*.log
+
+# User-specific files
+*.user
+
+# Backup files
+*~ 
+*.swp
+
+# System files
+Thumbs.db
+.DS_Store
+
+# Ignore directories for IDE settings
+.idea/
+.vscode/
+
+# Ignore compiled object files
+*.o
+*.obj
+
+# Ignore executable files
+*.exe
+*.axf
+
+# Ignore libraries
+*.lib
+*.a
+
+# Ignore compiled binary files
+*.bin
+*.hex
+
+# Ignore map files
+*.map
+
+# Ignore debugging files
+*.d
+*.lst
+
+# Ignore miscellaneous files
+*.sdf
+*.ncb
+*.suo
+
+# Ignore Keil project settings
+*.uvmpw
+
+# Ignore coverage files
+*.gcno
+*.gcda
+
+# Ignore test result files
+*.gcov
+
+# Ignore CMake build files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
